@@ -1,0 +1,21 @@
+<?php
+
+namespace #Namespace;
+
+use #NameUseBaseRepository\BaseRepository;
+
+/**
+ * Class #ClassName
+ *
+ * @package #Namespace
+ */
+class #ClassName extends BaseRepository implements #InterfaceName
+{
+    /**
+     * @return mixed|string
+     */
+    public function model()
+    {
+        //TODO : Model::class
+    }
+}

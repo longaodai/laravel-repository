@@ -1,0 +1,24 @@
+<?php
+
+namespace #Namespace;
+
+#UseRepositoryInterface;
+use #NameUseBaseInternalService\BaseInternalService;
+
+/**
+ * Class #ClassName
+ *
+ * @package #Namespace
+ */
+class #ClassName extends BaseInternalService implements #InterfaceName
+{
+    /**
+     * #ClassName constructor.
+     *
+     * @param #NameRepositoryInterface $#NameServiceRepository
+     */
+    public function __construct(#NameRepositoryInterface $#NameServiceRepository)
+    {
+        $this->repository = $#NameServiceRepository;
+    }
+}

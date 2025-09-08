@@ -1,0 +1,33 @@
+{
+  "name": "longaodai/laravel-repository",
+  "description": "A clean and simple repository pattern implementation for Laravel 11+",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Vo Chi Long",
+      "email": "vochilong.work@gmail.com"
+    }
+  ],
+  "keywords": [
+    "laravel",
+    "repository",
+    "repository-pattern",
+    "service-layer"
+  ],
+  "require": {
+    "php": "^8.2",
+    "illuminate/support": "^11.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "LongAoDai\\Repository\\": "src/"
+    }
+  },
+  "support": {
+    "issues": "https://github.com/longaodai/laravel-repository/issues",
+    "source": "https://github.com/longaodai/laravel-repository"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
