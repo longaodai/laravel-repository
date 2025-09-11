@@ -1,6 +1,6 @@
 {
   "name": "longaodai/laravel-repository",
-  "description": "A clean and simple repository pattern implementation for Laravel 11+",
+  "description": "A clean and simple repository pattern implementation for Laravel",
   "type": "library",
   "license": "MIT",
   "authors": [

@@ -8,7 +8,7 @@ use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\Routing\Exception\InvalidParameterException;
+use LongAoDai\Repository\Exceptions\RepositoryFailureHandlingException;
 
 /**
  * Abstract Class BaseRepository
@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
  * Contains common CRUD operations and helper methods for query handling.
  *
  * @package LongAoDai\Repository
+ * @author  vochilong<vochilong.work@gmail.com>
  */
 abstract class BaseRepository
 {
@@ -213,7 +214,7 @@ abstract class BaseRepository
      * @param RepositoryResponse $params
      * @return int Number of affected rows
      *
-     * @throws InvalidParameterException
+     * @throws RepositoryFailureHandlingException
      */
     public function update(RepositoryResponse $params): int
     {
@@ -221,7 +222,7 @@ abstract class BaseRepository
         $this->mask($params);
 
         if (empty($this->query->getQuery()->wheres)) {
-            throw new InvalidParameterException(
+            throw new RepositoryFailureHandlingException(
                 "Update operation requires at least one WHERE condition."
             );
         }
@@ -257,7 +258,7 @@ abstract class BaseRepository
      * @param RepositoryResponse $params
      * @return int Number of deleted rows
      *
-     * @throws InvalidParameterException
+     * @throws RepositoryFailureHandlingException
      */
     public function destroy(RepositoryResponse $params): int
     {
@@ -265,7 +266,7 @@ abstract class BaseRepository
         $this->filter($params);
 
         if (empty($this->query->getQuery()->wheres)) {
-            throw new InvalidParameterException(
+            throw new RepositoryFailureHandlingException(
                 "Delete operation requires at least one WHERE condition."
             );
         }

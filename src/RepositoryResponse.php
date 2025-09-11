@@ -15,6 +15,7 @@ use stdClass;
  * and provides helper methods to access and manipulate data and options.
  *
  * @package LongAoDai\Repository
+ * @author  vochilong<vochilong.work@gmail.com>
  */
 final class RepositoryResponse
 {

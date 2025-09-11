@@ -3,14 +3,14 @@
 namespace #Namespace;
 
 #UseRepositoryInterface;
-use #NameUseBaseInternalService\BaseInternalService;
+use LongAoDai\Repository\BaseService;
 
 /**
  * Class #ClassName
  *
  * @package #Namespace
  */
-class #ClassName extends BaseInternalService implements #InterfaceName
+class #ClassName extends BaseService implements #InterfaceName
 {
     /**
      * #ClassName constructor.

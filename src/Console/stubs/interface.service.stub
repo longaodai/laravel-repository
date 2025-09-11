@@ -1,75 +1,98 @@
 <?php
 
+declare(strict_types=1);
+
 namespace #Namespace;
+
+use Illuminate\Support\Collection;
+
+use LongAoDai\Repository\Exceptions\RepositoryFailureHandlingException;
 
 /**
  * Interface #InterfaceName
  *
- * @package #Namespace
+ * Defines the contract for service classes interacting with repositories.
+ * Each method corresponds to a BaseService implementation.
  */
 interface #InterfaceName
 {
     /**
-     * @param $data
-     * @param $options
+     * Retrieve all records.
      *
+     * @param Collection|array $data
+     * @param Collection|array $options
      * @return mixed
      */
-    public function all($data = null, $options = null);
+    public function all(Collection|array $data = [], Collection|array $options = []): mixed;
 
     /**
-     * @param $data
-     * @param $options
+     * Retrieve paginated list of records.
      *
+     * @param Collection|array $data
+     * @param Collection|array $options
      * @return mixed
      */
-    public function getList($data = null, $options = null);
+    public function getList(Collection|array $data = [], Collection|array $options = []): mixed;
 
     /**
-     * @param $data
-     * @param $options
+     * Show a single record by ID.
      *
+     * @param Collection|array $data
+     * @param Collection|array $options
      * @return mixed
+     *
+     * @throws RepositoryFailureHandlingException
      */
-    public function show($data = null, $options = null);
+    public function show(Collection|array $data = [], Collection|array $options = []): mixed;
 
     /**
-     * @param $data
-     * @param $options
+     * Get the first record by conditions.
      *
+     * @param Collection|array $data
+     * @param Collection|array $options
      * @return mixed
      */
-    public function getFirstBy($data = null, $options = null);
+    public function getFirstBy(Collection|array $data = [], Collection|array $options = []): mixed;
 
     /**
-     * @param $data
-     * @param $options
+     * Create a new record.
      *
+     * @param Collection|array $data
+     * @param Collection|array $options
      * @return mixed
+     *
+     * @throws RepositoryFailureHandlingException
      */
-    public function store($data = null, $options = null);
+    public function store(Collection|array $data = [], Collection|array $options = []): mixed;
 
     /**
-     * @param $data
-     * @param $options
+     * Update existing record(s).
      *
+     * @param Collection|array $data
+     * @param Collection|array $options
      * @return mixed
+     *
+     * @throws RepositoryFailureHandlingException
      */
-    public function update($data = null, $options = null);
+    public function update(Collection|array $data = [], Collection|array $options = []): mixed;
 
     /**
-     * @param $data
-     * @param $options
+     * Update an existing record or create a new one.
      *
+     * @param Collection|array $data
+     * @param Collection|array $options
      * @return mixed
      */
-    public function updateOrCreate($data = null, $options = null);
+    public function updateOrCreate(Collection|array $data = [], Collection|array $options = []): mixed;
 
     /**
-     * @param $data
-     * @param $options
+     * Delete record(s).
      *
+     * @param Collection|array $data
+     * @param Collection|array $options
      * @return mixed
+     *
+     * @throws RepositoryFailureHandlingException
      */
-    public function destroy($data = null, $options = null);
+    public function destroy(Collection|array $data = [], Collection|array $options = []): mixed;
 }

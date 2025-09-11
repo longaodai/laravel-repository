@@ -2,7 +2,8 @@
 
 namespace #Namespace;
 
-use #NameUseBaseRepository\BaseRepository;
+use #ModelNamespace;
+use LongAoDai\Repository\BaseRepository;
 
 /**
  * Class #ClassName
@@ -16,6 +17,6 @@ class #ClassName extends BaseRepository implements #InterfaceName
      */
     public function model()
     {
-        //TODO : Model::class
+        #ModelName::class;
     }
 }

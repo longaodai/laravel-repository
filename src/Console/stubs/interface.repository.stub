@@ -2,90 +2,81 @@
 
 namespace #Namespace;
 
+use Illuminate\Database\Eloquent\Model;
+
+use LongAoDai\Repository\RepositoryResponse;
+
 /**
  * Interface #InterfaceName
+ *
+ * Defines the contract for repository classes using the Repository pattern.
+ * Each repository should extend BaseRepository and implement these methods.
  *
  * @package #Namespace
  */
 interface #InterfaceName
 {
     /**
-     * @param object $params
+     * Retrieve all records with optional filters.
      *
-     * @internal params array $data
-     * @internal params array $options
-     *
+     * @param RepositoryResponse $params
      * @return mixed
      */
-    public function all($params);
+    public function all(RepositoryResponse $params): mixed;
 
     /**
-     * @param object $params
+     * Retrieve paginated list of records.
      *
-     * @internal params array $data
-     * @internal params array $options
-     *
+     * @param RepositoryResponse $params
      * @return mixed
      */
-    public function getList($params);
+    public function getList(RepositoryResponse $params): mixed;
 
     /**
-     * @param object $params
+     * Find a record by ID.
      *
-     * @internal params array $data
-     * @internal params array $options
-     *
-     * @return mixed
+     * @param RepositoryResponse $params
+     * @return Model|null
      */
-    public function find($params);
+    public function find(RepositoryResponse $params): ?Model;
 
     /**
-     * @param object $params
+     * Get the first record that matches filters.
      *
-     * @internal params array $data
-     * @internal params array $options
-     *
-     * @return mixed
+     * @param RepositoryResponse $params
+     * @return Model|null
      */
-    public function first($params);
+    public function first(RepositoryResponse $params): ?Model;
 
     /**
-     * @param object $params
+     * Create a new record.
      *
-     * @internal params array $data
-     * @internal params array $options
-     *
-     * @return mixed
+     * @param RepositoryResponse $params
+     * @return Model
      */
-    public function create($params);
+    public function create(RepositoryResponse $params): Model;
 
     /**
-     * @param object $params
+     * Update existing records.
      *
-     * @internal params array $data
-     * @internal params array $options
-     *
-     * @return mixed
+     * @param RepositoryResponse $params
+     * @return int Number of affected rows
      */
-    public function update($params);
+    public function update(RepositoryResponse $params): int;
 
     /**
-     * @param object $params
+     * Update or create a record.
      *
-     * @internal params array $data
-     * @internal params array $options
-     *
-     * @return mixed
+     * @param RepositoryResponse $params
+     * @return Model
      */
-    public function updateOrCreate($params);
+    public function updateOrCreate(RepositoryResponse $params): Model;
 
     /**
-     * @param object $params
+     * Delete records.
      *
-     * @internal params array $data
-     * @internal params array $options
-     *
-     * @return mixed
+     * @param RepositoryResponse $params
+     * @return int Number of deleted rows
      */
-    public function destroy($params);
+    public function destroy(RepositoryResponse $params): int;
 }
