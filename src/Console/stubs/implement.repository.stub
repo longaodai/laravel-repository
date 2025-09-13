@@ -2,7 +2,8 @@
 
 namespace #Namespace;
 
-use #ModelNamespace;
+#UserModelNamespace;
+use Illuminate\Database\Eloquent\Model;
 use LongAoDai\Repository\BaseRepository;
 
 /**
@@ -13,10 +14,40 @@ use LongAoDai\Repository\BaseRepository;
 class #ClassName extends BaseRepository implements #InterfaceName
 {
     /**
-     * @return mixed|string
+     * @return class-string<Model>
      */
-    public function model()
+    public function model(): string
     {
-        #ModelName::class;
+        return #ModelName::class;
+    }
+
+    /**
+     * Hook for filtering queries.
+     *
+     * @param RepositoryResponse $params
+     * @return static
+     */
+    protected function filter(RepositoryResponse $params): static
+    {
+        if (!empty($params->get('id'))) {
+            $this->method('where', 'id', $params->get('id'));
+        }
+
+        return parent::filter($params);
+    }
+
+    /**
+     * Hook for masking data before update.
+     *
+     * @param RepositoryResponse $params
+     * @return static
+     */
+    protected function mask(RepositoryResponse $params): static
+    {
+        if (!empty($params->option('id'))) {
+            $this->method('where', 'id', $params->option('id'));
+        }
+
+        return parent::mask($params);
     }
 }

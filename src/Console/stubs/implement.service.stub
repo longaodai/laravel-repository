@@ -15,10 +15,10 @@ class #ClassName extends BaseService implements #InterfaceName
     /**
      * #ClassName constructor.
      *
-     * @param #NameRepositoryInterface $#NameServiceRepository
+     * @param #NameRepositoryInterface $repository
      */
-    public function __construct(#NameRepositoryInterface $#NameServiceRepository)
+    public function __construct(#NameRepositoryInterface $repository)
     {
-        $this->repository = $#NameServiceRepository;
+        $this->repository = $repository;
     }
 }

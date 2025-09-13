@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace #Namespace;
 
 use Illuminate\Support\Collection;
-
 use LongAoDai\Repository\Exceptions\RepositoryFailureHandlingException;
 
 /**

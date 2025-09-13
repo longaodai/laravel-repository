@@ -23,17 +23,7 @@ abstract class BaseService
      *
      * @var object
      */
-    protected readonly object $repository;
-
-    /**
-     * BaseService constructor.
-     *
-     * @param object $repository
-     */
-    public function __construct(object $repository)
-    {
-        $this->repository = $repository;
-    }
+    protected object $repository;
 
     /**
      * Retrieve all records.

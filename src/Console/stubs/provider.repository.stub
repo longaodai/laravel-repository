@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-#InterfaceNamespace
-#ClassNamespace
+#InterfaceUseNamespace
+#ClassUseNamespace
 
 /**
  * Class RepositoryServiceProvider

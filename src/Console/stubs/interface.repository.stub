@@ -3,7 +3,6 @@
 namespace #Namespace;
 
 use Illuminate\Database\Eloquent\Model;
-
 use LongAoDai\Repository\RepositoryResponse;
 
 /**

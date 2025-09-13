@@ -6,7 +6,7 @@ namespace LongAoDai\Repository\Console;
 
 use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Console\View\Components;
+use Illuminate\Console\View\Components\Component;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
@@ -30,19 +30,15 @@ class CreatePatternCommand extends Command
 {
     /**
      * The console command signature.
-     *
-     * @var string
      */
-    protected string $signature = 'make:repository {name : The name of the repository} 
+    protected $signature = 'make:repository {name : The name of the repository} 
                            {--model= : The model class name}
                            {--force : Overwrite existing files}';
 
     /**
      * The console command description.
-     *
-     * @var string
      */
-    protected string $description = 'Create a new repository and service pattern with interfaces';
+    protected $description = 'Create a new repository and service pattern with interfaces';
 
     /**
      * Default path constants for services and repositories.
@@ -397,16 +393,20 @@ class CreatePatternCommand extends Command
 
         return [
             '#Namespace' => $namespace,
-            '#InterfaceNamespace' => "use {$namespace}\\{$interfaceName};\n#InterfaceNamespace",
-            '#ClassNamespace' => "use {$namespace}\\{$className};\n#ClassNamespace",
-            '#RepositoryInterfaceName' => $interfaceName,
-            '#RepositoryClassName' => $className,
+            '#InterfaceName' => $interfaceName,
+            '#ClassName' => $className,
+
             '#InterfaceProvides' => "{$interfaceName}::class,\n\t\t\t#InterfaceProvides",
             '#Singleton' => "\$this->app->singleton({$interfaceName}::class, {$className}::class);\n\t\t#Singleton",
+
             '#UseRepositoryInterface' => "use {$this->repositoryNamespace}\\{$repositoryInterfaceName}",
-            '#NameServiceRepository' => $repositoryInterfaceName,
+            '#NameRepositoryInterface' => $repositoryInterfaceName,
+
+            '#UserModelNamespace' => $this->getModelNamespace(),
             '#ModelName' => $this->getModelName(),
-            '#ModelNamespace' => $this->getModelNamespace(),
+
+            '#InterfaceUseNamespace' => "use {$namespace}\\{$interfaceName};\n#InterfaceUseNamespace",
+            '#ClassUseNamespace' => "use {$namespace}\\{$className};\n#ClassUseNamespace",
         ];
     }
 
@@ -420,7 +420,7 @@ class CreatePatternCommand extends Command
         $modelOption = $this->option('model');
 
         if ($modelOption) {
-            return $modelOption . '::class';
+            return $modelOption;
         }
 
         // Remove "Repository" suffix if exists and return as model name
@@ -429,7 +429,7 @@ class CreatePatternCommand extends Command
             ? Str::replaceLast('Repository', '', $name)
             : $name;
 
-        return $modelName . '::class';
+        return $modelName;
     }
 
     /**
@@ -442,7 +442,7 @@ class CreatePatternCommand extends Command
         $modelOption = $this->option('model');
 
         if ($modelOption) {
-            return "use App\\Models\\{$modelOption};";
+            return "use App\\Models\\{$modelOption}";
         }
 
         $name = $this->getNameInput();
@@ -450,7 +450,7 @@ class CreatePatternCommand extends Command
             ? Str::replaceLast('Repository', '', $name)
             : $name;
 
-        return "use App\\Models\\{$modelName};";
+        return "use App\\Models\\{$modelName}";
     }
 
     /**
@@ -508,7 +508,7 @@ class CreatePatternCommand extends Command
      */
     private function prepareNamespaceByPath(string $folder): string
     {
-        return str_replace('/', '\\', trim($folder, '/'));
+        return str_replace('/', '\\', trim($folder));
     }
 
     /**
@@ -518,9 +518,12 @@ class CreatePatternCommand extends Command
      */
     private function runComposerDumpAutoload(): void
     {
-        if ($this->confirmComposerDump()) {
+        if (
+            config('pattern.is_auto_load', false) ||
+            (config('pattern.is_ask_auto_load', true) && $this->confirmComposerDump())
+        ) {
             $this->newLine();
-            $this->components->task('Running composer dump-autoload', function () {
+            $this->components->task('Running composer dump-autoload to update class mappings', function () {
                 exec('composer dump-autoload > /dev/null 2>&1');
                 return true;
             });
@@ -546,9 +549,7 @@ class CreatePatternCommand extends Command
     {
         $name = $this->getNameInput();
 
-        $this->newLine();
         $this->components->info("Repository and Service patterns created successfully!");
-        $this->newLine();
 
         // Repository files table
         $this->components->twoColumnDetail('Repository Interface',
@@ -567,12 +568,8 @@ class CreatePatternCommand extends Command
         $this->newLine();
 
         if ($this->option('model')) {
-            $this->newLine();
             $this->components->twoColumnDetail('Model Binding',
                 "<fg=gray>{$this->getModelNamespace()}</>");
         }
-
-        $this->newLine();
-        $this->components->warn('I love Laravel.');
     }
 }
