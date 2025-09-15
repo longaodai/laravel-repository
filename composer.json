@@ -27,7 +27,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "LongAoDai\\Repository\\Providers\\RepositoryServiceProvider"
+        "LongAoDai\\Repository\\RepositoryServiceProvider"
       ]
     }
   },
