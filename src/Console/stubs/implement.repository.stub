@@ -5,6 +5,7 @@ namespace #Namespace;
 #UserModelNamespace;
 use Illuminate\Database\Eloquent\Model;
 use LongAoDai\Repository\BaseRepository;
+use LongAoDai\Repository\RepositoryResponse;
 
 /**
  * Class #ClassName

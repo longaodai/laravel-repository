@@ -9,12 +9,11 @@ return [
     | Repository Path
     |--------------------------------------------------------------------------
     |
-    | Define the base path where repositories will be generated inside your
-    | Laravel application. By default, repositories will be placed under
-    | the "app/Repositories" directory.
+    | Define the base path where repositories will be generated inside
+    | your Laravel application. By default, repositories are placed under
+    | "app/Repositories".
     |
     */
-
     'path_repository' => 'Repositories',
 
     /*
@@ -22,63 +21,42 @@ return [
     | Service Path
     |--------------------------------------------------------------------------
     |
-    | Define the base path where services will be generated inside your
-    | Laravel application. By default, services will be placed under
-    | the "app/Services" directory.
+    | Define the base path where services will be generated inside
+    | your Laravel application. By default, services are placed under
+    | "app/Services".
     |
     */
-
     'path_service' => 'Services',
 
-    /**
-     * Determines whether composer dump-autoload should run automatically.
-     *
-     * Logic:
-     * - If `is_auto_load = true`  → always run (highest priority).
-     * - Else if `is_ask_auto_load = true` → ask user confirmation.
-     * - Else → do not run.
-     *
-     * Truth table:
-     * | dump_auto_load | ask_dump_auto_load | confirm? | Result        |
-     * |----------------|--------------------|----------|---------------|
-     * | true           | *                  | *        | Run           |
-     * | false          | true               | yes      | Run           |
-     * | false          | true               | no       | Skip          |
-     * | false          | false              | *        | Skip          |
-     */
     /*
     |--------------------------------------------------------------------------
-    | Auto Run Composer Dump-Autoload
+    | Composer Autoload Settings
     |--------------------------------------------------------------------------
     |
-    | This option determines whether the package should automatically run
-    | "composer dump-autoload" after generating repositories or services.
+    | Control whether "composer dump-autoload" should run automatically
+    | after generating repositories or services.
     |
-    | - When set to true, the command will be executed silently without
-    |   asking the user for confirmation.
-    | - When set to false, it will either skip or prompt the user depending
-    |   on the "is_ask_auto_load" setting below.
+    | Logic:
+    | - 'dump_auto_load' = true  → always run automatically.
+    | - 'dump_auto_load' = false + 'ask_dump_auto_load' = true → prompt user.
+    | - 'dump_auto_load' = false + 'ask_dump_auto_load' = false → skip.
     |
     */
 
+    // Run "composer dump-autoload" automatically after generation
     'dump_auto_load' => false,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Ask Before Running Composer Dump-Autoload
-    |--------------------------------------------------------------------------
-    |
-    | This option specifies whether the user should be asked before running
-    | "composer dump-autoload". It only applies when "is_auto_load" is false.
-    |
-    | - When set to true, the user will be prompted to confirm execution.
-    | - When set to false, the package will skip running dump-autoload unless
-    |   "is_auto_load" is explicitly enabled.
-    |
-    */
-
+    // Ask for confirmation before running "composer dump-autoload"
     'ask_dump_auto_load' => true,
 
-    // Base limit for get list
+    /*
+    |--------------------------------------------------------------------------
+    | Pagination Limit
+    |--------------------------------------------------------------------------
+    |
+    | Base limit for paginated lists when using the repository methods.
+    | Default: 20 records per page.
+    |
+    */
     'limit_paginate' => 20,
 ];

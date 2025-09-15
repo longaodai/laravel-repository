@@ -1,0 +1,43 @@
+# Composer / PHP
+/vendor/
+/composer.lock
+/.phpunit.result.cache
+
+!.gitignore
+
+# Node / Frontend (if used)
+node_modules/
+/npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+
+# PHPUnit coverage and reports
+coverage/
+phpunit.xml.cache
+*.cov
+
+# Generated files (optional, if you have build or dist folder)
+dist/
+build/
+
+# Environment files
+.env
+.env.*.local

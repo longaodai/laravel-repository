@@ -26,7 +26,7 @@ abstract class BaseRepository
      *
      * @var Application
      */
-    protected readonly Application $app;
+    protected Application $app;
 
     /**
      * The current query builder instance for the model.
@@ -116,7 +116,7 @@ abstract class BaseRepository
      */
     protected function getLimitPaginate(RepositoryResponse $params): int
     {
-        return $params->option('limit') ?? 20;
+        return $params->option('limit') ?? config('repository.limit_paginate', 20);
     }
 
     /**
@@ -278,9 +278,9 @@ abstract class BaseRepository
      * Hook for filtering queries (override in child repositories).
      *
      * @param RepositoryResponse $params
-     * @return static
+     * @return BaseRepository
      */
-    protected function filter(RepositoryResponse $params): static
+    protected function filter(RepositoryResponse $params): BaseRepository
     {
         return $this;
     }
@@ -289,9 +289,9 @@ abstract class BaseRepository
      * Hook for masking data before update (override in child repositories).
      *
      * @param RepositoryResponse $params
-     * @return static
+     * @return BaseRepository
      */
-    protected function mask(RepositoryResponse $params): static
+    protected function mask(RepositoryResponse $params): BaseRepository
     {
         return $this;
     }
