@@ -39,12 +39,12 @@ return [
      * - Else → do not run.
      *
      * Truth table:
-     * | is_auto_load | is_ask_auto_load | confirm? | Result        |
-     * |--------------|------------------|----------|---------------|
-     * | true         | *                | *        | Run           |
-     * | false        | true             | yes      | Run           |
-     * | false        | true             | no       | Skip          |
-     * | false        | false            | *        | Skip          |
+     * | dump_auto_load | ask_dump_auto_load | confirm? | Result        |
+     * |----------------|--------------------|----------|---------------|
+     * | true           | *                  | *        | Run           |
+     * | false          | true               | yes      | Run           |
+     * | false          | true               | no       | Skip          |
+     * | false          | false              | *        | Skip          |
      */
     /*
     |--------------------------------------------------------------------------
@@ -61,7 +61,7 @@ return [
     |
     */
 
-    'is_auto_load' => false,
+    'dump_auto_load' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -77,5 +77,8 @@ return [
     |
     */
 
-    'is_ask_auto_load' => true,
+    'ask_dump_auto_load' => true,
+
+    // Base limit for get list
+    'limit_paginate' => 20,
 ];
