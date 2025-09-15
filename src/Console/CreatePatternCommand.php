@@ -78,16 +78,16 @@ class CreatePatternCommand extends Command
      * Path to service directory.
      */
     private string $pathDirectoryService;
+    private Filesystem $files;
 
     /**
      * Create a new command instance.
      *
      * @param Filesystem $files The filesystem instance for file operations
      */
-    public function __construct(
-        private readonly Filesystem $files
-    )
+    public function __construct(Filesystem $files)
     {
+        $this->files = $files;
         parent::__construct();
     }
 
@@ -487,7 +487,7 @@ class CreatePatternCommand extends Command
      */
     protected function getPathDirectoryRepositoryBase(): string
     {
-        return config('pattern.path_repository', self::PATH_REPOSITORY) . '/';
+        return config('repository.path_repository', self::PATH_REPOSITORY) . '/';
     }
 
     /**
@@ -497,7 +497,7 @@ class CreatePatternCommand extends Command
      */
     protected function getPathDirectoryServiceBase(): string
     {
-        return config('pattern.path_service', self::PATH_SERVICE) . '/';
+        return config('repository.path_service', self::PATH_SERVICE) . '/';
     }
 
     /**
@@ -519,8 +519,8 @@ class CreatePatternCommand extends Command
     private function runComposerDumpAutoload(): void
     {
         if (
-            config('pattern.is_auto_load', false) ||
-            (config('pattern.is_ask_auto_load', true) && $this->confirmComposerDump())
+            config('repository.dump_auto_load', false) ||
+            (config('repository.ask_dump_auto_load', true) && $this->confirmComposerDump())
         ) {
             $this->newLine();
             $this->components->task('Running composer dump-autoload to update class mappings', function () {

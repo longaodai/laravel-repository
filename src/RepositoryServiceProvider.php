@@ -23,8 +23,8 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/pattern.php',
-            'pattern'
+            __DIR__ . '/../config/repository.php',
+            'repository'
         );
     }
 
@@ -35,7 +35,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         // Allow publishing config file
         $this->publishes([
-            __DIR__ . '/../config/pattern.php' => config_path('pattern.php'),
+            __DIR__ . '/../config/repository.php' => config_path('repository.php'),
         ], 'laravel-repository');
 
         if ($this->app->runningInConsole()) {
