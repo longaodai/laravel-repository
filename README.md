@@ -290,16 +290,16 @@ class UserService implements UserServiceInterface
 
 The base repository provides these methods out of the box:
 
-| Method | Description                    | Example                                                                         |
-|--------|--------------------------------|---------------------------------------------------------------------------------|
-| `all()` | Get all records                | `$service->all()`                                                               |
-| `getList($params)` | Get paginated list with filters | `$service->getList(['status' => 'active'], ['per_page' => 10])`                 |
-| `find($conditions)` | Find by id                     | `$service->find(['id' => 1])`                                                   |
-| `first($conditions)` | Get first record by conditions | `$service->first(['status' => 'active'])`                                       |
-| `create($data)` | Create new record              | `$service->create(['name' => 'John'])`                                          |
-| `update($data, $conditions)` | Update records                 | `$service->update(['name' => 'Jane'], ['id' => 1])`                             |
-| `updateOrCreate($conditions, $data)` | Update or create record        | `$service->updateOrCreate(['name' => 'Test'], ['email' => 'test@example.com'])` |
-| `destroy($conditions)` | Delete records                 | `$service->destroy(['id' => 1])`                                                |
+| Method                       | Description                    | Example                                                                         |
+|------------------------------|--------------------------------|---------------------------------------------------------------------------------|
+| `all()`                      | Get all records                | `$service->all()`                                                               |
+| `getList()`   | Get paginated list with filters | `$service->getList(['status' => 'active'], ['per_page' => 10])`                 |
+| `find()`          | Find by id                     | `$service->find(['id' => 1])`                                                   |
+| `first()`         | Get first record by conditions | `$service->first(['status' => 'active'])`                                       |
+| `create()`              | Create new record              | `$service->create(['name' => 'John'])`                                          |
+| `update()` | Update records                 | `$service->update(['name' => 'Jane'], ['id' => 1])`                             |
+| `updateOrCreate()`    | Update or create record        | `$service->updateOrCreate(['name' => 'Test'], ['email' => 'test@example.com'])` |
+| `destroy()`       | Delete records                 | `$service->destroy(['id' => 1])`                                                |
 
 ## Method Examples
 
