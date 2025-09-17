@@ -6,30 +6,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Repository Path
-    |--------------------------------------------------------------------------
-    |
-    | Define the base path where repositories will be generated inside
-    | your Laravel application. By default, repositories are placed under
-    | "app/Repositories".
-    |
-    */
-    'path_repository' => 'Repositories',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Service Path
-    |--------------------------------------------------------------------------
-    |
-    | Define the base path where services will be generated inside
-    | your Laravel application. By default, services are placed under
-    | "app/Services".
-    |
-    */
-    'path_service' => 'Services',
-
-    /*
-    |--------------------------------------------------------------------------
     | Composer Autoload Settings
     |--------------------------------------------------------------------------
     |
@@ -44,10 +20,10 @@ return [
     */
 
     // Run "composer dump-autoload" automatically after generation
-    'dump_auto_load' => false,
+    'dump_auto_load' => true,
 
     // Ask for confirmation before running "composer dump-autoload"
-    'ask_dump_auto_load' => true,
+    'ask_dump_auto_load' => false,
 
     /*
     |--------------------------------------------------------------------------
