@@ -30,6 +30,7 @@ abstract class BaseService
      *
      * @param Collection|array $data
      * @param Collection|array $options
+     *
      * @return mixed
      */
     public function all(Collection|array $data = [], Collection|array $options = []): mixed
@@ -44,6 +45,7 @@ abstract class BaseService
      *
      * @param Collection|array $data
      * @param Collection|array $options
+     *
      * @return mixed
      */
     public function getList(Collection|array $data = [], Collection|array $options = []): mixed
@@ -58,6 +60,7 @@ abstract class BaseService
      *
      * @param Collection|array $data
      * @param Collection|array $options
+     *
      * @return mixed
      *
      * @throws RepositoryFailureHandlingException
@@ -84,6 +87,7 @@ abstract class BaseService
      *
      * @param Collection|array $data
      * @param Collection|array $options
+     *
      * @return mixed
      */
     public function getFirstBy(Collection|array $data = [], Collection|array $options = []): mixed
@@ -98,6 +102,7 @@ abstract class BaseService
      *
      * @param Collection|array $data
      * @param Collection|array $options
+     *
      * @return mixed
      *
      * @throws RepositoryFailureHandlingException
@@ -120,6 +125,7 @@ abstract class BaseService
      *
      * @param Collection|array $data
      * @param Collection|array $options
+     *
      * @return mixed
      *
      * @throws RepositoryFailureHandlingException
@@ -142,6 +148,7 @@ abstract class BaseService
      *
      * @param Collection|array $data
      * @param Collection|array $options
+     *
      * @return mixed
      */
     public function updateOrCreate(Collection|array $data = [], Collection|array $options = []): mixed
@@ -156,6 +163,7 @@ abstract class BaseService
      *
      * @param Collection|array $data
      * @param Collection|array $options
+     *
      * @return mixed
      *
      * @throws RepositoryFailureHandlingException
@@ -178,6 +186,7 @@ abstract class BaseService
      *
      * @param Collection|array $data
      * @param Collection|array $options
+     *
      * @return RepositoryResponse
      */
     protected function response(Collection|array $data = [], Collection|array $options = []): RepositoryResponse
