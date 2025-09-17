@@ -36,6 +36,16 @@ abstract class BaseRepository
     protected Builder $query;
 
     /**
+     * The database table associated with the model.
+     *
+     * This is typically resolved automatically from the Eloquent model,
+     * but you can also override it if needed for custom repositories.
+     *
+     * @var string
+     */
+    protected string $table;
+
+    /**
      * BaseRepository constructor.
      *
      * @param Application $app
@@ -45,6 +55,7 @@ abstract class BaseRepository
     {
         $this->app = $app;
         $this->makeModel();
+        $this->initTable();
     }
 
     /**
@@ -87,6 +98,43 @@ abstract class BaseRepository
     }
 
     /**
+     * Initialize the table name from the Eloquent model.
+     *
+     * @return void
+     */
+    protected function initTable(): void
+    {
+        $this->table = $this->getTable();
+    }
+
+    /**
+     * Get the underlying Eloquent model instance used by this repository.
+     *
+     * Example:
+     *   $user = $this->getModel();
+     *   $user->fill([...])->save();
+     *
+     * @return Model
+     */
+    public function getModel(): Model
+    {
+        return $this->method('getModel');
+    }
+
+    /**
+     * Get the database table name associated with the Eloquent model.
+     *
+     * Example:
+     *   $tableName = $this->getTable(); // "users"
+     *
+     * @return string
+     */
+    public function getTable(): string
+    {
+        return $this->getModel()->getTable();
+    }
+
+    /**
      * Get the underlying query builder.
      *
      * @return Builder
@@ -101,6 +149,7 @@ abstract class BaseRepository
      *
      * @param string $name
      * @param mixed ...$arguments
+     *
      * @return mixed
      */
     public function method(string $name, mixed ...$arguments): mixed
@@ -112,17 +161,19 @@ abstract class BaseRepository
      * Get the pagination limit from params or default.
      *
      * @param RepositoryResponse $params
+     *
      * @return int
      */
     protected function getLimitPaginate(RepositoryResponse $params): int
     {
-        return $params->option('limit') ?? config('repository.limit_paginate', 20);
+        return $params->option('per_page') ?? config('repository.limit_paginate', 20);
     }
 
     /**
      * Retrieve all records.
      *
      * @param RepositoryResponse $params
+     *
      * @return mixed
      */
     public function all(RepositoryResponse $params): mixed
@@ -137,6 +188,7 @@ abstract class BaseRepository
      * Count records.
      *
      * @param RepositoryResponse $params
+     *
      * @return int
      */
     public function count(RepositoryResponse $params): int
@@ -151,6 +203,7 @@ abstract class BaseRepository
      * Get paginated list of records.
      *
      * @param RepositoryResponse $params
+     *
      * @return mixed
      */
     public function getList(RepositoryResponse $params): mixed
@@ -165,6 +218,7 @@ abstract class BaseRepository
      * Find a record by ID.
      *
      * @param RepositoryResponse $params
+     *
      * @return Model|null
      */
     public function find(RepositoryResponse $params): ?Model
@@ -176,6 +230,7 @@ abstract class BaseRepository
      * Get the first record based on filters.
      *
      * @param RepositoryResponse $params
+     *
      * @return Model|null
      */
     public function first(RepositoryResponse $params): ?Model
@@ -190,6 +245,7 @@ abstract class BaseRepository
      * Create a new record.
      *
      * @param RepositoryResponse $params
+     *
      * @return Model
      */
     public function create(RepositoryResponse $params): Model
@@ -201,6 +257,7 @@ abstract class BaseRepository
      * Insert multiple records at once.
      *
      * @param RepositoryResponse $params
+     *
      * @return bool
      */
     public function insert(RepositoryResponse $params): bool
@@ -212,6 +269,7 @@ abstract class BaseRepository
      * Update existing records.
      *
      * @param RepositoryResponse $params
+     *
      * @return int Number of affected rows
      *
      * @throws RepositoryFailureHandlingException
@@ -234,6 +292,7 @@ abstract class BaseRepository
      * Update an existing record or create a new one.
      *
      * @param RepositoryResponse $params
+     *
      * @return Model
      */
     public function updateOrCreate(RepositoryResponse $params): Model
@@ -245,6 +304,7 @@ abstract class BaseRepository
      * Upsert records (insert or update).
      *
      * @param RepositoryResponse $params
+     *
      * @return mixed
      */
     public function upsert(RepositoryResponse $params): mixed
@@ -256,6 +316,7 @@ abstract class BaseRepository
      * Delete records.
      *
      * @param RepositoryResponse $params
+     *
      * @return int Number of deleted rows
      *
      * @throws RepositoryFailureHandlingException
@@ -278,6 +339,7 @@ abstract class BaseRepository
      * Hook for filtering queries (override in child repositories).
      *
      * @param RepositoryResponse $params
+     *
      * @return BaseRepository
      */
     protected function filter(RepositoryResponse $params): BaseRepository
@@ -289,6 +351,7 @@ abstract class BaseRepository
      * Hook for masking data before update (override in child repositories).
      *
      * @param RepositoryResponse $params
+     *
      * @return BaseRepository
      */
     protected function mask(RepositoryResponse $params): BaseRepository

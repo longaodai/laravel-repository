@@ -487,7 +487,7 @@ class CreatePatternCommand extends Command
      */
     protected function getPathDirectoryRepositoryBase(): string
     {
-        return config('repository.path_repository', self::PATH_REPOSITORY) . '/';
+        return self::PATH_REPOSITORY . '/';
     }
 
     /**
@@ -497,7 +497,7 @@ class CreatePatternCommand extends Command
      */
     protected function getPathDirectoryServiceBase(): string
     {
-        return config('repository.path_service', self::PATH_SERVICE) . '/';
+        return self::PATH_SERVICE . '/';
     }
 
     /**
