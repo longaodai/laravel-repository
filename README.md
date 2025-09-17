@@ -423,7 +423,3 @@ If you find this package helpful, please consider:
 - Reporting any bugs you encounter
 - Suggesting new features
 - Improving documentation
-
-For questions and support, please use
-the [GitHub Discussions](https://github.com/longaodai/laravel-repository/discussions) or create
-an [issue](https://github.com/longaodai/laravel-repository/issues).
