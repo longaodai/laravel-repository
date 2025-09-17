@@ -4,9 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/longaodai/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/longaodai/laravel-repository)
 [![License](https://img.shields.io/packagist/l/longaodai/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/longaodai/laravel-repository)
 
-A comprehensive Laravel package that implements the Repository and Service Layer design patterns, providing a clean and
-maintainable way to interact with your Eloquent models. This package promotes separation of concerns, making your code
-more testable, organized, and following SOLID principles.
+A comprehensive Laravel package that implements the **Repository** and **Service Layer** design patterns, providing a clean and maintainable way to interact with your Eloquent models. This package promotes separation of concerns, making your code more testable, organized, and following SOLID principles.
 
 ## Features
 
@@ -17,14 +15,10 @@ more testable, organized, and following SOLID principles.
 - **Performance Optimized** - Built with Laravel best practices
 - **Rich Query Methods** - Comprehensive set of query methods out of the box
 
-## Table of Contents
+## Requirements
 
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Quick Start](#quick-start)
-- [Available Methods](#available-methods)
-- [Best Practices](#best-practices)
-- [License](#license)
+- PHP >= 8.0
+- Laravel >= 9.0
 
 ## Installation
 
@@ -34,19 +28,15 @@ You can install the package via Composer:
 composer require longaodai/laravel-repository
 ```
 
-## Configuration
-
 Publish the configuration file:
 
 ```bash
 php artisan vendor:publish --tag=laravel-repository
 ```
 
-This will create a `config/repository.php` file where you can customize.
+This will create a `config/repository.php` file where you can customize package settings.
 
 ## Quick Start
-
-### 1. Generate Repository and Service
 
 Generate a complete repository and service for your model:
 
@@ -54,22 +44,21 @@ Generate a complete repository and service for your model:
 php artisan make:repository User
 ```
 
-**Options:**
+### Available Options:
+- `--model=ModelName`: Specify the model class name
+- `--force`: Overwrite existing files
 
-- `--model=ModelName` : Specify the model class name
-- `--force` : Overwrite existing files
-  **Result:**
-
+### Generated Files:
 ```
 Repository Interface ........... App\Repositories\User\UserRepositoryInterface
-Repository Implementation ...... App\Repositories\User\UserEloquentRepository
-Service Interface .............. App\Services\User\UserServiceInterface  
+Repository Implementation ...... App\Repositories\User\UserEloquentRepository  
+Service Interface .............. App\Services\User\UserServiceInterface
 Service Implementation ......... App\Services\User\UserService
 ```
 
-### 2. Register Service Providers
+### Register Service Providers
 
-Add the generated service providers to your `bootstrap/providers.php` (only one in the first time):
+Add the generated service providers to your `bootstrap/providers.php` (only once after running the first make repository command):
 
 ```php
 <?php
@@ -77,37 +66,14 @@ return [
     App\Providers\AppServiceProvider::class,
     // ... other providers
     
-    // Add these lines
+    // Add these lines  
     App\Providers\RepositoryServiceProvider::class,
     App\Providers\InternalServiceProvider::class,
 ];
 ```
 
-### 3. Usage
-
-### Generating Repositories
-
-The package provides an Artisan command to generate repositories and services:
-
-```bash
-# Generate repository for existing model
-php artisan make:repository User
-
-# Generate repository and specify model
-php artisan make:repository User --model=User
-
-# Force overwrite existing files
-php artisan make:repository User --force
-```
-
-This generates four files:
-
-1. `UserRepositoryInterface` - Repository contract
-2. `UserEloquentRepository` - Eloquent implementation
-3. `UserServiceInterface` - Service contract
-4. `UserService` - Service implementation
-
-### Use in Controllers
+## Usage
+### Controller Integration
 
 Inject and use the service in your controllers:
 
@@ -198,7 +164,7 @@ class UserController extends Controller
 }
 ```
 
-#### Custom Repository Methods
+### Custom Repository Methods
 
 Add custom methods to your repository:
 
@@ -221,20 +187,21 @@ class UserEloquentRepository extends BaseRepository implements UserRepositoryInt
      * Hook for filtering queries.
      *
      * @param RepositoryResponse $params
+     *
      * @return static
      */
     protected function filter(RepositoryResponse $params): static
     {
         if (!empty($params->get('id'))) {
-            $this->method('where', 'id', $params->get('id'));
+            $this->method('where', $this->table . '.id', $params->get('id'));
         }
         
         if (!empty($params->get('name'))) {
-            $this->method('where', 'name', $params->get('name'));
+            $this->method('where', $this->table . '.name', $params->get('name'));
         }
         
         if (!empty($params->get('status'))) {
-            $this->method('where', 'status', $params->get('status'));
+            $this->method('where', $this->table . '.status', $params->get('status'));
         }
         
         if (!empty($params->option('with_post'))) {
@@ -247,15 +214,16 @@ class UserEloquentRepository extends BaseRepository implements UserRepositoryInt
     }
 
     /**
-     * Hook for masking data before update.
+     * Hook for filtering update.
      *
      * @param RepositoryResponse $params
+     *
      * @return static
      */
     protected function mask(RepositoryResponse $params): static
     {
         if (!empty($params->option('id'))) {
-            $this->method('where', 'id', $params->option('id'));
+            $this->method('where', $this->table . '.id', $params->option('id'));
         }
 
         return parent::mask($params);
@@ -263,7 +231,7 @@ class UserEloquentRepository extends BaseRepository implements UserRepositoryInt
 }
 ```
 
-#### Service Layer Business Logic
+### Service Layer Business Logic
 
 Implement complex business logic in services:
 
@@ -278,11 +246,9 @@ use Illuminate\Support\Facades\DB;
 
 class UserService implements UserServiceInterface
 {
-    protected $userRepository;
-
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserRepositoryInterface $repository)
     {
-        $this->userRepository = $userRepository;
+        $this->userRepository = $repository;
     }
 
     /**
@@ -293,11 +259,13 @@ class UserService implements UserServiceInterface
         return DB::transaction(function () use ($userData) {
             // Create user
             $user = $this->userRepository->create($userData);
+
             // Send welcome notification
             $user->notify(new WelcomeNotification());
+
             // Log user creation
             logger('New user created', ['user_id' => $user->id]);
-            
+
             return $user;
         });
     }
@@ -311,7 +279,6 @@ class UserService implements UserServiceInterface
             [
                 'status' => $data['status'],
             ], [
-                'limit' => 10,
                 'with_post' => true,
             ]
         );
@@ -323,18 +290,20 @@ class UserService implements UserServiceInterface
 
 The base repository provides these methods out of the box:
 
-| Method                               | Description                     | Example                                                                         |
-|--------------------------------------|---------------------------------|---------------------------------------------------------------------------------|
-| `all()`                              | Get all records                 | `$service->all()`                                                               |
-| `getList($params)`                   | Get paginated list with filters | `$service->getList(['per_page' => 10])`                                         |
-| `find($conditions)`                  | Find by id                      | `$service->find(['id' => 1])`                                                   |
-| `first($conditions)`                 | Get first record by conditions  | `$service->first(['status' => 'active'])`                                       |
-| `create($data)`                      | Create new record               | `$service->create(['name' => 'John'])`                                          |
-| `update($data, $conditions)`         | Update records                  | `$service->update(['name' => 'Jane'], ['id' => 1])`                             |
-| `updateOrCreate($conditions, $data)` | Update or create record         | `$service->updateOrCreate(['email' => 'test@example.com'], ['name' => 'Test'])` |
-| `destroy($conditions)`               | Delete records                  | `$service->destroy(['id' => 1])`                                                |
+| Method | Description                    | Example                                             |
+|--------|--------------------------------|-----------------------------------------------------|
+| `all()` | Get all records                | `$service->all()`                                   |
+| `getList($params)` | Get paginated list with filters | `$service->getList(['per_page' => 10])`                |
+| `find($conditions)` | Find by id                     | `$service->find(['id' => 1])`                       |
+| `first($conditions)` | Get first record by conditions | `$service->first(['status' => 'active'])`           |
+| `create($data)` | Create new record              | `$service->create(['name' => 'John'])`              |
+| `update($data, $conditions)` | Update records                 | `$service->update(['name' => 'Jane'], ['id' => 1])` |
+| `updateOrCreate($conditions, $data)` | Update or create record        | `$service->updateOrCreate(['name' => 'Test'], ['email' => 'test@example.com'])`    |
+| `destroy($conditions)` | Delete records                 | `$service->destroy(['id' => 1])`                    |
 
-### Advanced Query Examples
+## Method Examples
+
+### Retrieving Data
 
 ```php
 // Get all users
@@ -353,7 +322,11 @@ $user = $userService->find(['id' => 1]);
 // Get first user with conditions
 $activeUser = $userService->first(['status' => 'active']);
 $user = $userService->first(['email' => 'user@example.com']);
+```
 
+### Creating Data
+
+```php
 // Create new user
 $newUser = $userService->create(collect([
     'name' => 'John Doe',
@@ -361,19 +334,26 @@ $newUser = $userService->create(collect([
     'password' => bcrypt('password123'),
     'status' => 'active'
 ]));
+```
 
+### Updating Data
+
+```php
 // Update user
 $updatedUser = $userService->update([
-    'name' => 'John Smith',
-    'updated_at' => now()
-], ['id' => 1]);
+    'name' => 'John Smith', // data to update
+], ['id' => 1]); // conditions
 
 // Update or create user
 $user = $userService->updateOrCreate(
-    collect(['email' => 'jane@example.com']), // conditions
     collect(['name' => 'Jane Doe', 'status' => 'active']) // data to update/create
+    collect(['email' => 'jane@example.com']), // conditions
 );
+```
 
+### Deleting Data
+
+```php
 // Delete user
 $deleted = $userService->destroy(['id' => 1]);
 
@@ -383,9 +363,7 @@ $deleted = $userService->destroy(['status' => 'inactive']);
 
 ## Best Practices
 
-### 1. Keep Controllers Thin
-
-Move business logic to services, not controllers:
+### Move Business Logic to Services
 
 ```php
 // ❌ Bad - Logic in controller
@@ -396,9 +374,9 @@ public function store(Request $request)
         'email' => $request->email,
         'password' => bcrypt($request->password),
     ]);
-    
+
     $user->notify(new WelcomeNotification());
-    
+
     return response()->json($user);
 }
 
@@ -411,9 +389,7 @@ public function store(Request $request)
 }
 ```
 
-### 2. Use Type Hinting
-
-Always use interface type hinting:
+### Always Use Interface Type Hinting
 
 ```php
 // ✅ Good
@@ -422,40 +398,12 @@ public function __construct(UserServiceInterface $userService)
     $this->userService = $userService;
 }
 
-// ❌ Bad
+// ❌ Bad  
 public function __construct(UserService $userService)
 {
     $this->userService = $userService;
 }
 ```
-
-### 3. Handle Exceptions Properly
-
-Implement proper exception handling:
-
-```php
-public function findUser($id)
-{
-    try {
-        $user = $this->userService->find(['id' => $id]);
-        
-        if (!$user) {
-            throw new RepositoryFailureHandlingException('User not found');
-        }
-        
-        return $user;
-    } catch (Exception $e) {
-        logger()->error('Error finding user', ['id' => $id, 'error' => $e->getMessage()]);
-        throw $e;
-    }
-}
-```
-
-## Requirements
-
-- PHP >= 8.0
-- Laravel >= 9.0
-
 ## Security
 
 If you discover any security-related issues, please email vochilong.work@gmail.com instead of using the issue tracker.
