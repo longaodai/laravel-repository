@@ -56,7 +56,13 @@ Service Interface .............. App\Services\User\UserServiceInterface
 Service Implementation ......... App\Services\User\UserService
 ```
 
-### Register Service Providers
+## Important Note: Service Provider Registration
+
+The service provider registration depends on your Laravel version and configuration:
+
+### For Provider Binding Mode (Default - Works well on all Laravel versions)
+
+If your `config/repository.php` has `'binding_mode' => 'provider'` (default), you **must** register the service providers.
 
 Add the generated service providers to your `bootstrap/providers.php` (only once after running the first make repository command):
 
@@ -69,6 +75,19 @@ return [
     // Add these lines  
     App\Providers\RepositoryServiceProvider::class,
     App\Providers\InternalServiceProvider::class,
+];
+```
+
+### For Attribute Binding Mode (Laravel >= 12)
+
+If your `config/repository.php` has `'binding_mode' => 'attribute'` and you're using **Laravel 12+**, you can skip the service provider registration entirely. The package will automatically register bindings using PHP attributes.
+
+**Configuration Example:**
+```php
+// config/repository.php
+return [
+    'binding_mode' => 'attribute', // Change to 'attribute' for Laravel 12+
+    // ... other config
 ];
 ```
 
