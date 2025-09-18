@@ -21,7 +21,7 @@ return [
     |
     */
 
-    'binding_mode' => env('REPOSITORY_BINDING_MODE', 'attribute'),
+    'binding_mode' => env('REPOSITORY_BINDING_MODE', 'provider'),
 
     /*
     |--------------------------------------------------------------------------
