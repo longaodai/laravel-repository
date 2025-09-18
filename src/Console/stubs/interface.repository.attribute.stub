@@ -1,0 +1,85 @@
+<?php
+
+namespace #Namespace;
+
+use Illuminate\Database\Eloquent\Model;
+use LongAoDai\Repository\RepositoryResponse;
+use Illuminate\Container\Attributes\Bind;
+use Illuminate\Container\Attributes\Singleton;
+
+/**
+ * Interface #InterfaceName
+ *
+ * Defines the contract for repository classes using the Repository pattern.
+ * Each repository should extend BaseRepository and implement these methods.
+ *
+ * @package #Namespace
+ */
+#[Bind(#Bind)]
+#[Singleton]
+interface #InterfaceName
+{
+    /**
+     * Retrieve all records with optional filters.
+     *
+     * @param RepositoryResponse $params
+     * @return mixed
+     */
+    public function all(RepositoryResponse $params): mixed;
+
+    /**
+     * Retrieve paginated list of records.
+     *
+     * @param RepositoryResponse $params
+     * @return mixed
+     */
+    public function getList(RepositoryResponse $params): mixed;
+
+    /**
+     * Find a record by ID.
+     *
+     * @param RepositoryResponse $params
+     * @return Model|null
+     */
+    public function find(RepositoryResponse $params): ?Model;
+
+    /**
+     * Get the first record that matches filters.
+     *
+     * @param RepositoryResponse $params
+     * @return Model|null
+     */
+    public function first(RepositoryResponse $params): ?Model;
+
+    /**
+     * Create a new record.
+     *
+     * @param RepositoryResponse $params
+     * @return Model
+     */
+    public function create(RepositoryResponse $params): Model;
+
+    /**
+     * Update existing records.
+     *
+     * @param RepositoryResponse $params
+     * @return int Number of affected rows
+     */
+    public function update(RepositoryResponse $params): int;
+
+    /**
+     * Update or create a record.
+     *
+     * @param RepositoryResponse $params
+     * @return Model
+     */
+    public function updateOrCreate(RepositoryResponse $params): Model;
+
+    /**
+     * Delete records.
+     *
+     * @param RepositoryResponse $params
+     * @return int Number of deleted rows
+     */
+    public function destroy(RepositoryResponse $params): int;
+}

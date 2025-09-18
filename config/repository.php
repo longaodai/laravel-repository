@@ -6,6 +6,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Repository Binding Mode
+    |--------------------------------------------------------------------------
+    |
+    | Choose how repositories are bound into Laravel's IoC container:
+    |
+    | Mode         Description                                 Laravel Version
+    | ------------ ------------------------------------------ ----------------
+    | "provider"   Generates RepositoryServiceProvider with    Laravel any
+    |              register() and provides() methods.          (works everywhere)
+    |
+    | "attribute"  Uses PHP Attributes #[Singleton], #[Bind]   Laravel 12+
+    |              for auto-binding repositories.              (not backward compatible)
+    |
+    */
+
+    'binding_mode' => env('REPOSITORY_BINDING_MODE', 'attribute'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Composer Autoload Settings
     |--------------------------------------------------------------------------
     |
