@@ -56,7 +56,13 @@ Service Interface .............. App\Services\User\UserServiceInterface
 Service Implementation ......... App\Services\User\UserService
 ```
 
-### Register Service Providers
+## Important Note: Service Provider Registration
+
+The service provider registration depends on your Laravel version and configuration:
+
+### For Provider Binding Mode (Default - Works well on all Laravel versions)
+
+If your `config/repository.php` has `'binding_mode' => 'provider'` (default), you **must** register the service providers.
 
 Add the generated service providers to your `bootstrap/providers.php` (only once after running the first make repository command):
 
@@ -69,6 +75,19 @@ return [
     // Add these lines  
     App\Providers\RepositoryServiceProvider::class,
     App\Providers\InternalServiceProvider::class,
+];
+```
+
+### For Attribute Binding Mode (Laravel >= 12)
+
+If your `config/repository.php` has `'binding_mode' => 'attribute'` and you're using **Laravel 12+**, you can skip the service provider registration entirely. The package will automatically register bindings using PHP attributes.
+
+**Configuration Example:**
+```php
+// config/repository.php
+return [
+    'binding_mode' => 'attribute', // Change to 'attribute' for Laravel 12+
+    // ... other config
 ];
 ```
 
@@ -290,16 +309,16 @@ class UserService implements UserServiceInterface
 
 The base repository provides these methods out of the box:
 
-| Method | Description                    | Example                                             |
-|--------|--------------------------------|-----------------------------------------------------|
-| `all()` | Get all records                | `$service->all()`                                   |
-| `getList($params)` | Get paginated list with filters | `$service->getList(['per_page' => 10])`                |
-| `find($conditions)` | Find by id                     | `$service->find(['id' => 1])`                       |
-| `first($conditions)` | Get first record by conditions | `$service->first(['status' => 'active'])`           |
-| `create($data)` | Create new record              | `$service->create(['name' => 'John'])`              |
-| `update($data, $conditions)` | Update records                 | `$service->update(['name' => 'Jane'], ['id' => 1])` |
-| `updateOrCreate($conditions, $data)` | Update or create record        | `$service->updateOrCreate(['name' => 'Test'], ['email' => 'test@example.com'])`    |
-| `destroy($conditions)` | Delete records                 | `$service->destroy(['id' => 1])`                    |
+| Method                       | Description                    | Example                                                                         |
+|------------------------------|--------------------------------|---------------------------------------------------------------------------------|
+| `all()`                      | Get all records                | `$service->all()`                                                               |
+| `getList()`   | Get paginated list with filters | `$service->getList(['status' => 'active'], ['per_page' => 10])`                 |
+| `find()`          | Find by id                     | `$service->find(['id' => 1])`                                                   |
+| `first()`         | Get first record by conditions | `$service->first(['status' => 'active'])`                                       |
+| `create()`              | Create new record              | `$service->create(['name' => 'John'])`                                          |
+| `update()` | Update records                 | `$service->update(['name' => 'Jane'], ['id' => 1])`                             |
+| `updateOrCreate()`    | Update or create record        | `$service->updateOrCreate(['name' => 'Test'], ['email' => 'test@example.com'])` |
+| `destroy()`       | Delete records                 | `$service->destroy(['id' => 1])`                                                |
 
 ## Method Examples
 
@@ -311,10 +330,8 @@ $users = $userService->all();
 
 // Get paginated list with search
 $users = $userService->getList([
-    'per_page' => 20,
-    'search' => 'john',
     'status' => 'active'
-]);
+], ['per_page' => 20,]);
 
 // Find specific user
 $user = $userService->find(['id' => 1]);

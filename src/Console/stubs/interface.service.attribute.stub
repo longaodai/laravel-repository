@@ -1,0 +1,101 @@
+<?php
+
+declare(strict_types=1);
+
+namespace #Namespace;
+
+use Illuminate\Support\Collection;
+use Illuminate\Container\Attributes\Bind;
+use Illuminate\Container\Attributes\Singleton;
+use LongAoDai\Repository\Exceptions\RepositoryFailureHandlingException;
+
+/**
+ * Interface #InterfaceName
+ *
+ * Defines the contract for service classes interacting with repositories.
+ * Each method corresponds to a BaseService implementation.
+ */
+#[Bind(#Bind)]
+#[Singleton]
+interface #InterfaceName
+{
+    /**
+     * Retrieve all records.
+     *
+     * @param Collection|array $data
+     * @param Collection|array $options
+     * @return mixed
+     */
+    public function all(Collection|array $data = [], Collection|array $options = []): mixed;
+
+    /**
+     * Retrieve paginated list of records.
+     *
+     * @param Collection|array $data
+     * @param Collection|array $options
+     * @return mixed
+     */
+    public function getList(Collection|array $data = [], Collection|array $options = []): mixed;
+
+    /**
+     * Show a single record by ID.
+     *
+     * @param Collection|array $data
+     * @param Collection|array $options
+     * @return mixed
+     *
+     * @throws RepositoryFailureHandlingException
+     */
+    public function show(Collection|array $data = [], Collection|array $options = []): mixed;
+
+    /**
+     * Get the first record by conditions.
+     *
+     * @param Collection|array $data
+     * @param Collection|array $options
+     * @return mixed
+     */
+    public function getFirstBy(Collection|array $data = [], Collection|array $options = []): mixed;
+
+    /**
+     * Create a new record.
+     *
+     * @param Collection|array $data
+     * @param Collection|array $options
+     * @return mixed
+     *
+     * @throws RepositoryFailureHandlingException
+     */
+    public function store(Collection|array $data = [], Collection|array $options = []): mixed;
+
+    /**
+     * Update existing record(s).
+     *
+     * @param Collection|array $data
+     * @param Collection|array $options
+     * @return mixed
+     *
+     * @throws RepositoryFailureHandlingException
+     */
+    public function update(Collection|array $data = [], Collection|array $options = []): mixed;
+
+    /**
+     * Update an existing record or create a new one.
+     *
+     * @param Collection|array $data
+     * @param Collection|array $options
+     * @return mixed
+     */
+    public function updateOrCreate(Collection|array $data = [], Collection|array $options = []): mixed;
+
+    /**
+     * Delete record(s).
+     *
+     * @param Collection|array $data
+     * @param Collection|array $options
+     * @return mixed
+     *
+     * @throws RepositoryFailureHandlingException
+     */
+    public function destroy(Collection|array $data = [], Collection|array $options = []): mixed;
+}

@@ -53,6 +53,20 @@ class CreatePatternCommand extends Command
     private const TYPE_INTERFACE = 'interface';
 
     /**
+     * Repository binding mode using PHP attributes
+     * (#[Bind], #[Singleton], etc.).
+     * Recommended for Laravel 12+.
+     */
+    private const BINDING_MODE_ATTRIBUTE = 'attribute';
+
+    /**
+     * Repository binding mode using a traditional Service Provider
+     * with register() and provides() methods.
+     * Recommended for Laravel 11 or below
+     */
+    private const BINDING_MODE_PROVIDER = 'provider';
+
+    /**
      * Stub file paths mapping.
      *
      * @var array
@@ -108,6 +122,11 @@ class CreatePatternCommand extends Command
             'provider_repository' => $stubPath . 'provider.repository.stub',
             'provider_service' => $stubPath . 'provider.service.stub',
         ];
+
+        if (config('repository.binding_mode') == self::BINDING_MODE_ATTRIBUTE) {
+            $this->stubs['repository_interface'] = $stubPath . 'interface.repository.attribute.stub';
+            $this->stubs['service_interface'] = $stubPath . 'interface.service.attribute.stub';
+        }
     }
 
     /**
@@ -126,7 +145,10 @@ class CreatePatternCommand extends Command
                 return Command::FAILURE;
             }
 
-            $this->updateServiceProviders();
+            if (config('repository.binding_mode') == self::BINDING_MODE_PROVIDER) {
+                $this->generateServiceProviders();
+            }
+
             $this->runComposerDumpAutoload();
             $this->displaySuccessMessages();
 
@@ -223,11 +245,11 @@ class CreatePatternCommand extends Command
     }
 
     /**
-     * Update repository and service provider files with new bindings.
+     * Generate repository and service provider files with new bindings.
      *
      * @return void
      */
-    protected function updateServiceProviders(): void
+    protected function generateServiceProviders(): void
     {
         $providers = [
             'RepositoryServiceProvider' => self::PATH_REPOSITORY,
@@ -396,6 +418,7 @@ class CreatePatternCommand extends Command
             '#InterfaceName' => $interfaceName,
             '#ClassName' => $className,
 
+            '#Bind' => "\\$namespace\\$className::class",
             '#InterfaceProvides' => "{$interfaceName}::class,\n\t\t\t#InterfaceProvides",
             '#Singleton' => "\$this->app->singleton({$interfaceName}::class, {$className}::class);\n\t\t#Singleton",
 
